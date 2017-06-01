@@ -10,10 +10,28 @@
 </head>
 <body role="document">
 <div class="page-header">
-    <h1>蔵書管理システム</h1>
+    <h3>本の登録</h3>
+</div>
+<div class="container">
+    <form th:action="@{/books/create}" th:object="${bookRequest}" method="post">
+        <div class="form-inline">
+            <div class="form-group" th:classappend="${#fields.hasErrors('title')}? 'has-error has-feedback'">
+                <label for="title">タイトル</label>
+                <input type="text" id="title" name="title" th:field="*{title}" class="form-control"
+                       value="はじめてのSpringBoot"/>
+                <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="help-block">error!</span>
+            </div>
+            <div class="form-group" th:classappend="${#fields.hasErrors('type')}? 'has-error has-feedback'">
+                <label for="type">タイプ</label>
+                <input type="text" id="type" name="type" th:field="*{type}" class="form-control" value="技術本"/>
+                <span th:if="${#fields.hasErrors('type')}" th:errors="*{type}" class="help-block">error!</span>
+            </div>
+        </div>
+        <input type="submit" class="btn btn-primary" id="register" value="作成"/>
+    </form>
 </div>
 <div class="page-header">
-    <h3>蔵書一覧</h3>
+    <h3>本の一覧</h3>
 </div>
 <div class="col-md-6" id="book-list">
     <table class="table table-striped">
@@ -29,8 +47,8 @@
         <tbody>
         <tr th:each="book, stat : ${books}">
             <td th:text="${book.id}" th:id="'id'+${stat.count}">100</td>
-            <td th:text="${book.title}" th:id="'title'+${stat.count}">山田</td>
-            <td th:text="${book.type}" th:id="'title'+${stat.count}">太郎</td>
+            <td th:text="${book.title}" th:id="'title'+${stat.count}">はじめてのSpringBoot</td>
+            <td th:text="${book.type}" th:id="'title'+${stat.count}">技術本</td>
             <!--<td>-->
             <!--<form th:action="@{/customers/edit}" method="get">-->
             <!--<input type="submit" name="request" value="編集"  class="btn btn-primary" th:id="'edit'+${customerStat.count}"/>-->
