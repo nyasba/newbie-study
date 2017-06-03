@@ -62,3 +62,14 @@ select title, count(*) from (
 ## 課題6 どんなタイプの本が人気か調べる
 
 考えてみよう
+
+## 課題7 手動テストで実施した不要データの削除
+
+オートコミットのチェックを外してください
+
+```
+select id, title, type from books where title = 'テストタイトル1';
+delete from books where id = <取得したid>
+```
+
+コミット(deleteを確定)、ロールバック(元に戻す)の動きを確認してください

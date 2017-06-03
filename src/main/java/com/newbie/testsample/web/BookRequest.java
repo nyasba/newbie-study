@@ -2,12 +2,15 @@ package com.newbie.testsample.web;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.Size;
+
 public class BookRequest {
     
-    @NotEmpty
+    @NotEmpty(message = "タイトルを入力してください")
     private String title;
     
-    @NotEmpty
+    @NotEmpty(message = "分類を入力してください")
+    @Size(max = 10, message = "分類は10文字までにしてください")
     private String type;
     
     public String getTitle() {
