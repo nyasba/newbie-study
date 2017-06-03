@@ -13,7 +13,7 @@ http://www.h2database.com/html/main.html
 「bin\h2.bat」を実行し、JDBCのURLを以下のように設定して接続する
 
 ```
-jdbc:h2:file:<プロジェクトディレクトリのパス>\testdb
+jdbc:h2:file:<Project Root>\testdb
 ```
 
 アプリケーションを立ち上げていると接続できないのでアプリケーションは落としておく
