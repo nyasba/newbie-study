@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>レンタル</title>
+</head>
+<body>
+<form th:action="@{/books/rental}" th:object="${bookRentalRequest}" method="post">
+    <dl>
+        <dt><label for="returnDate">返却予定日</label></dt>
+        <dd>
+            <input type="date" id="returnDate" name="returnDate" th:field="*{returnDate}" th:errorclass="error-input"
+                   value="2017/06/01"/>
+            <span th:if="${#fields.hasErrors('returnDate')}" th:errors="*{returnDate}"
+                  class="error-messages">error!</span>
+        </dd>
+    </dl>
+    <!--<input type="submit" name="goToTop" id="goToTop" value="戻る"/>-->
+    <input type="hidden" name="id" th:value="${param.id[0]}"/>
+    <input type="submit" id="submit" value="レンタル"/>
+</form>
+</body>
+</html>

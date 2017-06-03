@@ -5,10 +5,60 @@
     <title>蔵書管理システム</title>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="../../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}"/>
-    <link rel="stylesheet" href="../../static/css/bootstrap-theme.min.css"
+    <link rel="stylesheet" href="../../static/css/bootstrap-responsive.min.css"
           th:href="@{/css/bootstrap-responsive.min.css}"/>
 </head>
 <body role="document">
+<div class="page-header">
+    <h3>本の一覧</h3>
+</div>
+<div class="col-md-6" id="book-list">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>タイトル</th>
+            <th>分類</th>
+            <th>返却予定日</th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="book, stat : ${books}">
+            <td th:text="${book.id}" th:id="'id'+${stat.count}">100</td>
+            <td th:text="${book.title}" th:id="'title'+${stat.count}">はじめてのSpringBoot</td>
+            <td th:text="${book.type}" th:id="'title'+${stat.count}">技術本</td>
+            <td th:if="${book.latestRentalReturnDate != null}"
+                th:text="${#temporals.format(book.latestRentalReturnDate, 'yyyy/MM/dd')}"
+                th:id="'returnDate'+${stat.count}">2017/06/01
+            </td>
+            <td th:if="${book.latestRentalReturnDate == null}" th:text="null" th:id="'returnDate'+${stat.count}">
+                2017/06/01
+            </td>
+            <!--<td>-->
+            <!--<form th:action="@{/customers/edit}" method="get">-->
+            <!--<input type="submit" name="request" value="編集"  class="btn btn-primary" th:id="'edit'+${customerStat.count}"/>-->
+            <!--<input type="hidden" name="id" th:value="${customer.id}"/>-->
+            <!--</form>-->
+            <!--</td>-->
+            <td>
+                <form th:action="@{/books/rental}" method="get">
+                    <input type="submit" name="request" value="レンタル" class="btn btn-primary"
+                           th:id="'rental'+${stat.count}"/>
+                    <input type="hidden" name="id" th:value="${book.id}"/>
+                </form>
+            </td>
+            <!--<td>-->
+            <!--<form th:action="@{/books/return}" method="post">-->
+            <!--<input type="hidden" name="id" th:value="${book.id}"/>-->
+            <!--<input type="submit" value="返却"  class="btn btn-primary" th:id="'return'+${customerStat.count}"/>-->
+            <!--</form>-->
+            <!--</td>-->
+        </tr>
+        </tbody>
+    </table>
+</div>
 <div class="page-header">
     <h3>本の登録</h3>
 </div>
@@ -22,48 +72,13 @@
                 <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="help-block">error!</span>
             </div>
             <div class="form-group" th:classappend="${#fields.hasErrors('type')}? 'has-error has-feedback'">
-                <label for="type">タイプ</label>
+                <label for="type">分類</label>
                 <input type="text" id="type" name="type" th:field="*{type}" class="form-control" value="技術本"/>
                 <span th:if="${#fields.hasErrors('type')}" th:errors="*{type}" class="help-block">error!</span>
             </div>
         </div>
         <input type="submit" class="btn btn-primary" id="register" value="作成"/>
     </form>
-</div>
-<div class="page-header">
-    <h3>本の一覧</h3>
-</div>
-<div class="col-md-6" id="book-list">
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>タイトル</th>
-            <th>種類</th>
-            <th></th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="book, stat : ${books}">
-            <td th:text="${book.id}" th:id="'id'+${stat.count}">100</td>
-            <td th:text="${book.title}" th:id="'title'+${stat.count}">はじめてのSpringBoot</td>
-            <td th:text="${book.type}" th:id="'title'+${stat.count}">技術本</td>
-            <!--<td>-->
-            <!--<form th:action="@{/customers/edit}" method="get">-->
-            <!--<input type="submit" name="request" value="編集"  class="btn btn-primary" th:id="'edit'+${customerStat.count}"/>-->
-            <!--<input type="hidden" name="id" th:value="${customer.id}"/>-->
-            <!--</form>-->
-            <!--</td>-->
-            <!--<td>-->
-            <!--<form th:action="@{/customers/delete}" method="post">-->
-            <!--<input type="submit" value="削除"  class="btn btn-primary" th:id="'delete'+${customerStat.count}"/>-->
-            <!--<input type="hidden" name="id" th:value="${customer.id}"/>-->
-            <!--</form>-->
-            <!--</td>-->
-        </tr>
-        </tbody>
-    </table>
 </div>
 </body>
 </html>

@@ -1,6 +1,8 @@
 package com.newbie.testsample.domain;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.util.List;
 
 /**
  * 本を管理するドメイン
@@ -11,9 +13,21 @@ public class BookEntity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Integer id;
     private String title;
     private String type; // 別途ENUMにするべき
+    
+    @OneToMany(mappedBy = "bookEntity")
+    private List<BookRentalEntity> bookRentalEntityList;
+    
+    public LocalDate getLatestRentalReturnDate() {
+        return bookRentalEntityList.stream()
+                .filter(BookRentalEntity::isRented)
+                .findFirst()
+                .map(BookRentalEntity::getReturnDate)
+                .orElse(null); // null返すの微妙。。
+    }
+    
     
     public BookEntity() {
     }
@@ -23,7 +37,7 @@ public class BookEntity {
         this.type = type;
     }
     
-    public int getId() {
+    public Integer getId() {
         return id;
     }
     
@@ -35,7 +49,7 @@ public class BookEntity {
         return type;
     }
     
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
     
@@ -45,5 +59,23 @@ public class BookEntity {
     
     public void setType(String type) {
         this.type = type;
+    }
+    
+    public List<BookRentalEntity> getBookRentalEntityList() {
+        return bookRentalEntityList;
+    }
+    
+    public void setBookRentalEntityList(List<BookRentalEntity> bookRentalEntityList) {
+        this.bookRentalEntityList = bookRentalEntityList;
+    }
+    
+    @Override
+    public String toString() {
+        return "BookEntity{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", type='" + type + '\'' +
+                ", bookRentalEntityList=" + bookRentalEntityList +
+                '}';
     }
 }
