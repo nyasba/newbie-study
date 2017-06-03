@@ -7,9 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 蔵書管理のコントローラー
@@ -32,6 +30,18 @@ public class BookController {
         model.addAttribute("books", bookService.getAll());
         return "books/list";
     }
+    
+    @GetMapping(value = "books", params = "search")
+    public String search(@RequestParam String searchType, Model model) {
+        model.addAttribute("books", bookService.getBooksByType(searchType));
+        return "books/list";
+    }
+    
+    @RequestMapping(value = "books/rental", params = "searchClear")
+    String searchClear() {
+        return "redirect:/books";
+    }
+    
     
     @PostMapping(value = "books/create")
     String create(@Validated BookRequest request, BindingResult result, Model model) {

@@ -1,7 +1,7 @@
 package com.newbie.testsample.service;
 
 import com.newbie.testsample.domain.BookEntity;
-import com.newbie.testsample.repository.BooksRepository;
+import com.newbie.testsample.repository.BookRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,23 +17,30 @@ public class BookServiceImpl implements BookService {
     private static Logger logger = LoggerFactory.getLogger(BookServiceImpl.class);
     
     @Autowired
-    private BooksRepository booksRepository;
+    private BookRepository bookRepository;
     
     @Override
     public List<BookEntity> getAll() {
-        List<BookEntity> bookEntityList = booksRepository.findAll();
+        List<BookEntity> bookEntityList = bookRepository.findAll();
+        bookEntityList.forEach(e -> logger.debug(e.toString()));
+        return bookEntityList;
+    }
+    
+    @Override
+    public List<BookEntity> getBooksByType(String type) {
+        List<BookEntity> bookEntityList = bookRepository.findByType(type);
         bookEntityList.forEach(e -> logger.debug(e.toString()));
         return bookEntityList;
     }
     
     @Override
     public void register(BookEntity bookEntity) {
-        booksRepository.save(bookEntity);
+        bookRepository.save(bookEntity);
     }
     
     @Override
     public BookEntity findById(Integer id) {
-        BookEntity bookEntity = booksRepository.findOne(id);
+        BookEntity bookEntity = bookRepository.findOne(id);
         logger.debug(bookEntity.toString());
         return bookEntity;
     }

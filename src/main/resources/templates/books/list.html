@@ -10,7 +10,24 @@
 </head>
 <body role="document">
 <div class="page-header">
-    <h3>本の一覧</h3>
+    <h3>本の一覧検索</h3>
+</div>
+<div class="container">
+    <form th:action="@{/books}" method="get">
+        <div class="form-inline">
+            <div class="form-group">
+                <label for="searchType">分類</label>
+                <input type="text" id="searchType" name="searchType" th:value="*{searchType}"
+                       class="form-control" value="技術本"/>
+            </div>
+        </div>
+        <br/>
+        <input type="submit" id="search" name="search" value="検索" class="btn btn-primary"/>
+        <input type="submit" name="searchClear" id="searchClear" value="クリア" class="btn btn-primary"/>
+    </form>
+</div>
+<div class="page-header">
+    <h3>結果</h3>
 </div>
 <div class="col-md-6" id="book-list">
     <table class="table table-striped">
@@ -36,12 +53,6 @@
             <td th:if="${book.latestRentalReturnDate == null}" th:text="null" th:id="'returnDate'+${stat.count}">
                 2017/06/01
             </td>
-            <!--<td>-->
-            <!--<form th:action="@{/customers/edit}" method="get">-->
-            <!--<input type="submit" name="request" value="編集"  class="btn btn-primary" th:id="'edit'+${customerStat.count}"/>-->
-            <!--<input type="hidden" name="id" th:value="${customer.id}"/>-->
-            <!--</form>-->
-            <!--</td>-->
             <td>
                 <form th:action="@{/books/rental}" method="get">
                     <input type="submit" name="request" value="レンタル" class="btn btn-primary"

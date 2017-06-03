@@ -3,5 +3,8 @@ package com.newbie.testsample.repository;
 import com.newbie.testsample.domain.BookEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface BooksRepository extends JpaRepository<BookEntity, Integer> {
+import java.util.List;
+
+public interface BookRepository extends JpaRepository<BookEntity, Integer> {
+    List<BookEntity> findByType(String type);
 }

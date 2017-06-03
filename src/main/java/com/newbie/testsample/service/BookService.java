@@ -8,6 +8,8 @@ public interface BookService {
     
     List<BookEntity> getAll();
     
+    List<BookEntity> getBooksByType(String type);
+    
     void register(BookEntity bookEntity);
     
     BookEntity findById(Integer id);
