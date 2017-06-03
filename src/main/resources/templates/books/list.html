@@ -74,7 +74,7 @@
     <h3>本の登録</h3>
 </div>
 <div class="container">
-    <form th:action="@{/books/create}" th:object="${bookRequest}" method="post">
+    <form th:action="@{/books/create}" th:object="${bookForm}" method="post">
         <div class="form-inline">
             <div class="form-group" th:classappend="${#fields.hasErrors('title')}? 'has-error has-feedback'">
                 <label for="title">タイトル</label>
