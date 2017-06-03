@@ -1,0 +1,19 @@
+spring:
+        datasource:
+                driverClassName: org.h2.Driver
+                url: jdbc:h2:file:./testdb
+                username: sa
+                password:
+        jpa:
+            hibernate:
+#                ddl-auto: create-drop
+                ddl-auto: update
+#            properties:
+#                hibernate:
+#                    show_sql: true
+#                    format_sql: true
+logging:
+    file: logs/application.log
+    level:
+        root: INFO
+        com.newbie.testsample: DEBUG
