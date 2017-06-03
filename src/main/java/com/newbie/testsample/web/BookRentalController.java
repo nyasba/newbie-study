@@ -1,24 +1,27 @@
 package com.newbie.testsample.web;
 
-import com.newbie.testsample.domain.BookEntity;
-import com.newbie.testsample.domain.BookRentalEntity;
+import com.newbie.testsample.domain.BookRentalCheckStatus;
 import com.newbie.testsample.service.BookRentalService;
 import com.newbie.testsample.service.BookService;
-import org.springframework.beans.BeanUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 
 /**
  * レンタルのコントローラー
  */
 @Controller
 public class BookRentalController {
+    
+    private static Logger logger = LoggerFactory.getLogger(BookRentalController.class);
     
     @Autowired
     private BookService bookService;
@@ -28,28 +31,38 @@ public class BookRentalController {
     
     // submitボタンのname要素で指定した内容がparamsと一致しているものが呼び出される
     @GetMapping(value = "books/rental", params = "request")
-    String rentalOrder(@RequestParam Integer id, BookRentalRequest bookRentalRequest) {
-        BookEntity bookEntity = bookService.findById(id);
-        BookRentalEntity bookRentalEntity = new BookRentalEntity(bookEntity);
-        BeanUtils.copyProperties(bookRentalEntity, bookRentalRequest);
+    String rentalRequest(@RequestParam Integer id, @ModelAttribute BookRentalRequest bookRentalRequest, Model model) {
+        // 初期値のセット
+        bookRentalRequest.setReturnDateIfNotExist(LocalDate.now());
+        
         return "books/rental";
     }
     
     @PostMapping(value = "books/rental")
-    String rentalCreate(@RequestParam Integer id, @Validated BookRentalRequest bookRentalRequest, BindingResult result) {
+    String rentalCreate(@RequestParam Integer id, @Validated BookRentalRequest bookRentalRequest, BindingResult result, Model model) {
+    
+        // バリデーションチェック
         if (result.hasErrors()) {
-            return rentalOrder(id, bookRentalRequest);
+            logger.error("binding result : " + result.toString());
+            return rentalRequest(id, bookRentalRequest, model);
         }
-        BookEntity bookEntity = bookService.findById(id);
-        BookRentalEntity bookRentalEntity = new BookRentalEntity(bookEntity, bookRentalRequest.getReturnDate());
-        bookRentalService.register(bookRentalEntity);
+    
+        // 日付などの業務的なチェック
+        BookRentalCheckStatus checkStatus = bookRentalService.canRental(id, bookRentalRequest.getReturnDate());
+        if (checkStatus.isError()) {
+            result.addError(new FieldError("bookRentalRequest", "returnDate", bookRentalRequest.getReturnDate(), false, null, null, checkStatus.getMessage()));
+            logger.error("binding result : " + result.toString());
+            return rentalRequest(id, bookRentalRequest, model);
+        }
+    
+        bookRentalService.rental(id, bookRentalRequest.getReturnDate());
         
         return "redirect:/books";
     }
     
     
     @PostMapping(value = "books/return")
-    String rentalOrder(@RequestParam Integer rentalId) {
+    String rentalRequest(@RequestParam Integer rentalId) {
         bookRentalService._return(rentalId);
         return "redirect:/books";
     }

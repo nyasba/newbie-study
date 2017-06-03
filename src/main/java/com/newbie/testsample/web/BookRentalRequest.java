@@ -19,6 +19,12 @@ public class BookRentalRequest {
         this.returnDate = returnDate;
     }
     
+    public void setReturnDateIfNotExist(LocalDate returnDate) {
+        if (this.returnDate == null) {
+            this.returnDate = returnDate;
+        }
+    }
+    
     @Override
     public String toString() {
         return "BookRentalRequest{" +

@@ -16,9 +16,10 @@
         <div class="form-inline">
             <div class="form-group">
                 <label for="returnDate">返却予定日</label>
-                <input type="date" id="returnDate" name="returnDate" th:field="*{returnDate}"
-                       th:errorclass="text-error"
+                <input type="date" id="returnDate" name="returnDate" th:field="*{returnDate}" class="form-control"
                        value="2017/06/01"/>
+                <span th:if="${#fields.hasErrors('returnDate')}" th:errors="*{returnDate}"
+                      class="text-error">error!</span>
             </div>
         </div>
         <br/>

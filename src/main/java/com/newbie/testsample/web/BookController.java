@@ -2,6 +2,8 @@ package com.newbie.testsample.web;
 
 import com.newbie.testsample.domain.BookEntity;
 import com.newbie.testsample.service.BookService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
  */
 @Controller
 public class BookController {
+    
+    private static Logger logger = LoggerFactory.getLogger(BookController.class);
     
     @Autowired
     private BookService bookService;
@@ -46,6 +50,7 @@ public class BookController {
     @PostMapping(value = "books/create")
     String create(@Validated BookRequest request, BindingResult result, Model model) {
         if (result.hasErrors()) {
+            logger.error("binding result : " + result.toString());
             return list(model);
         }
         BookEntity bookEntity = new BookEntity(
