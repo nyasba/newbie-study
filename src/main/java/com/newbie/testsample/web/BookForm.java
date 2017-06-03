@@ -4,7 +4,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Size;
 
-public class BookRequest {
+public class BookForm {
     
     @NotEmpty(message = "タイトルを入力してください")
     private String title;
@@ -31,7 +31,7 @@ public class BookRequest {
     
     @Override
     public String toString() {
-        return "BookRequest{" +
+        return "BookForm{" +
                 "title='" + title + '\'' +
                 ", type='" + type + '\'' +
                 '}';

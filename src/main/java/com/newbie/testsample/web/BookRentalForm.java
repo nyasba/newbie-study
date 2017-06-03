@@ -5,7 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
-public class BookRentalRequest {
+public class BookRentalForm {
     
     @NotNull
     @DateTimeFormat(pattern = "uuuu-MM-dd")
@@ -27,7 +27,7 @@ public class BookRentalRequest {
     
     @Override
     public String toString() {
-        return "BookRentalRequest{" +
+        return "BookRentalForm{" +
                 "returnDate=" + returnDate +
                 '}';
     }

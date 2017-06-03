@@ -31,31 +31,31 @@ public class BookRentalController {
     
     // submitボタンのname要素で指定した内容がparamsと一致しているものが呼び出される
     @GetMapping(value = "books/rental", params = "request")
-    String rentalRequest(@RequestParam Integer id, @ModelAttribute BookRentalRequest bookRentalRequest, Model model) {
+    String rentalRequest(@RequestParam Integer id, @ModelAttribute BookRentalForm bookRentalForm, Model model) {
         // 初期値のセット
-        bookRentalRequest.setReturnDateIfNotExist(LocalDate.now());
+        bookRentalForm.setReturnDateIfNotExist(LocalDate.now());
         
         return "books/rental";
     }
     
     @PostMapping(value = "books/rental")
-    String rentalCreate(@RequestParam Integer id, @Validated BookRentalRequest bookRentalRequest, BindingResult result, Model model) {
+    String rentalCreate(@RequestParam Integer id, @Validated BookRentalForm bookRentalForm, BindingResult result, Model model) {
     
         // バリデーションチェック
         if (result.hasErrors()) {
             logger.error("binding result : " + result.toString());
-            return rentalRequest(id, bookRentalRequest, model);
+            return rentalRequest(id, bookRentalForm, model);
         }
     
         // 日付などの業務的なチェック
-        BookRentalCheckStatus checkStatus = bookRentalService.canRental(id, bookRentalRequest.getReturnDate());
+        BookRentalCheckStatus checkStatus = bookRentalService.canRental(id, bookRentalForm.getReturnDate());
         if (checkStatus.isError()) {
-            result.addError(new FieldError("bookRentalRequest", "returnDate", bookRentalRequest.getReturnDate(), false, null, null, checkStatus.getMessage()));
+            result.addError(new FieldError("bookRentalForm", "returnDate", bookRentalForm.getReturnDate(), false, null, null, checkStatus.getMessage()));
             logger.error("binding result : " + result.toString());
-            return rentalRequest(id, bookRentalRequest, model);
+            return rentalRequest(id, bookRentalForm, model);
         }
     
-        bookRentalService.rental(id, bookRentalRequest.getReturnDate());
+        bookRentalService.rental(id, bookRentalForm.getReturnDate());
         
         return "redirect:/books";
     }

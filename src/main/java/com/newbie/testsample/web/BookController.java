@@ -23,10 +23,10 @@ public class BookController {
     private BookService bookService;
     
     @ModelAttribute
-    BookRequest setupRequest() {
+    BookForm setupForm() {
         // @RequestMappingの処理より先にオブジェクトを生成しておき
-        // それに対して値をセットするのでRequestオブジェクトにSetterが必要
-        return new BookRequest();
+        // それに対して値をセットするのでFormオブジェクトにSetterが必要
+        return new BookForm();
     }
     
     @GetMapping(value = "books")
@@ -48,14 +48,14 @@ public class BookController {
     
     
     @PostMapping(value = "books/create")
-    String create(@Validated BookRequest request, BindingResult result, Model model) {
+    String create(@Validated BookForm form, BindingResult result, Model model) {
         if (result.hasErrors()) {
             logger.error("binding result : " + result.toString());
             return list(model);
         }
         BookEntity bookEntity = new BookEntity(
-                request.getTitle(),
-                request.getType()
+                form.getTitle(),
+                form.getType()
         );
         
         bookService.register(bookEntity);
