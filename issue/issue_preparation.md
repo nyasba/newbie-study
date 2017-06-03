@@ -2,7 +2,7 @@
 
 Windowsを想定して記載しています。
 
-## 課題1-1 アプリケーションの起動
+## 課題1 アプリケーションの起動
 
 ### ソースの取得、eclipseへのインポート
 
@@ -33,7 +33,7 @@ src/main/java/com.newbie.testsample.TestsampleApplication
 蔵書管理システムという表示が確認できれば成功
 [http://localhost:8080/books](http://localhost:8080/books)
 
-## 課題1-2 アプリケーションの操作
+## 課題2 アプリケーションの操作
 
 以下の手順に沿って操作ができることを確認してください
 
