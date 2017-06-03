@@ -3,21 +3,29 @@
 <head>
     <meta charset="UTF-8"/>
     <title>レンタル</title>
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" href="../../static/css/bootstrap-responsive.min.css"
+          th:href="@{/css/bootstrap-responsive.min.css}"/>
 </head>
 <body>
-<form th:action="@{/books/rental}" th:object="${bookRentalRequest}" method="post">
-    <dl>
-        <dt><label for="returnDate">返却予定日</label></dt>
-        <dd>
-            <input type="date" id="returnDate" name="returnDate" th:field="*{returnDate}" th:errorclass="error-input"
-                   value="2017/06/01"/>
-            <span th:if="${#fields.hasErrors('returnDate')}" th:errors="*{returnDate}"
-                  class="error-messages">error!</span>
-        </dd>
-    </dl>
-    <!--<input type="submit" name="goToTop" id="goToTop" value="戻る"/>-->
-    <input type="hidden" name="id" th:value="${param.id[0]}"/>
-    <input type="submit" id="submit" value="レンタル"/>
-</form>
+<div class="page-header">
+    <h3>レンタル</h3>
+</div>
+<div class="container">
+    <form th:action="@{/books/rental}" th:object="${bookRentalRequest}" method="post">
+        <div class="form-inline">
+            <div class="form-group">
+                <label for="returnDate">返却予定日</label>
+                <input type="date" id="returnDate" name="returnDate" th:field="*{returnDate}"
+                       th:errorclass="error-input"
+                       value="2017/06/01"/>
+            </div>
+        </div>
+        <br/>
+        <input type="submit" name="goToTop" id="goToTop" value="戻る" class="btn btn-primary"/>
+        <input type="hidden" name="id" th:value="${param.id[0]}"/>
+        <input type="submit" id="submit" value="レンタル" class="btn btn-primary"/>
+    </form>
+</div>
 </body>
 </html>

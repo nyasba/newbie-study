@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -34,7 +35,6 @@ public class BookRentalController {
         return "books/rental";
     }
     
-    // submitボタンのname要素で指定した内容がparamsと一致しているものが呼び出される
     @PostMapping(value = "books/rental")
     String rentalCreate(@RequestParam Integer id, @Validated BookRentalRequest bookRentalRequest, BindingResult result) {
         if (result.hasErrors()) {
@@ -44,6 +44,12 @@ public class BookRentalController {
         BookRentalEntity bookRentalEntity = new BookRentalEntity(bookEntity, bookRentalRequest.getReturnDate());
         bookRentalService.register(bookRentalEntity);
         
+        return "redirect:/books";
+    }
+    
+    // submitボタンのname要素で指定した内容がparamsと一致しているものが呼び出される（request=edit.htmlの戻るボタン）
+    @RequestMapping(value = "books/rental", params = "goToTop")
+    String goToTop() {
         return "redirect:/books";
     }
     
