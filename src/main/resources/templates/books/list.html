@@ -50,9 +50,9 @@
                 </form>
             </td>
             <td>
-                <form th:action="@{/books/return}" method="post">
-                    <input type="hidden" name="id" th:value="${book.id}"/>
-                    <input type="submit" value="返却" class="btn btn-primary" th:id="'return'+${customerStat.count}"/>
+                <form th:if="${book.latestRentalId != null}" th:action="@{/books/return}" method="post">
+                    <input type="hidden" name="rentalId" th:value="${book.latestRentalId}"/>
+                    <input type="submit" value="返却" class="btn btn-primary" th:id="'return'+${stat.count}"/>
                 </form>
             </td>
         </tr>

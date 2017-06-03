@@ -3,6 +3,7 @@ package com.newbie.testsample.domain;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 本を管理するドメイン
@@ -21,11 +22,21 @@ public class BookEntity {
     private List<BookRentalEntity> bookRentalEntityList;
     
     public LocalDate getLatestRentalReturnDate() {
-        return bookRentalEntityList.stream()
-                .filter(BookRentalEntity::isRented)
-                .findFirst()
+        return getLatestRentalEntityOptional()
                 .map(BookRentalEntity::getReturnDate)
                 .orElse(null); // null返すの微妙。。
+    }
+    
+    public Integer getLatestRentalId() {
+        return getLatestRentalEntityOptional()
+                .map(BookRentalEntity::getId)
+                .orElse(null); // null返すの微妙。。
+    }
+    
+    private Optional<BookRentalEntity> getLatestRentalEntityOptional() {
+        return bookRentalEntityList.stream()
+                .filter(BookRentalEntity::isRented)
+                .findFirst();
     }
     
     
@@ -75,7 +86,7 @@ public class BookEntity {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", type='" + type + '\'' +
-                ", bookRentalEntityList=" + bookRentalEntityList +
+                ", bookRentalEntityLatest=" + getLatestRentalEntityOptional().map(BookRentalEntity::toString).orElse("") +
                 '}';
     }
 }

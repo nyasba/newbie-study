@@ -47,7 +47,15 @@ public class BookRentalController {
         return "redirect:/books";
     }
     
-    // submitボタンのname要素で指定した内容がparamsと一致しているものが呼び出される（request=edit.htmlの戻るボタン）
+    
+    @PostMapping(value = "books/return")
+    String rentalOrder(@RequestParam Integer rentalId) {
+        bookRentalService._return(rentalId);
+        return "redirect:/books";
+    }
+    
+    
+    // submitボタンのname要素で指定した内容がparamsと一致しているものが呼び出される（request=rental.htmlの戻るボタン）
     @RequestMapping(value = "books/rental", params = "goToTop")
     String goToTop() {
         return "redirect:/books";

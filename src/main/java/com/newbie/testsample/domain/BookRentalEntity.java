@@ -46,8 +46,16 @@ public class BookRentalEntity {
         this.returnDate = returnDate;
     }
     
+    public Integer getId() {
+        return id;
+    }
+    
     public LocalDate getReturnDate() {
         return returnDate;
+    }
+    
+    public void setReturnedDate(LocalDate returnedDate) {
+        this.returnedDate = returnedDate;
     }
     
     @Override
