@@ -69,12 +69,12 @@
                 <label for="title">タイトル</label>
                 <input type="text" id="title" name="title" th:field="*{title}" class="form-control"
                        value="はじめてのSpringBoot"/>
-                <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="help-block">error!</span>
+                <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="text-error">error!</span>
             </div>
             <div class="form-group" th:classappend="${#fields.hasErrors('type')}? 'has-error has-feedback'">
                 <label for="type">分類</label>
                 <input type="text" id="type" name="type" th:field="*{type}" class="form-control" value="技術本"/>
-                <span th:if="${#fields.hasErrors('type')}" th:errors="*{type}" class="help-block">error!</span>
+                <span th:if="${#fields.hasErrors('type')}" th:errors="*{type}" class="text-error">error!</span>
             </div>
         </div>
         <br/>
