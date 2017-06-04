@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Profile("dev")
+@Profile({"dev", "test"})
 @Service
 public class BookServiceImpl implements BookService {
     

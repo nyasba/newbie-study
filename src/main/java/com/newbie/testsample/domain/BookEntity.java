@@ -18,7 +18,7 @@ public class BookEntity {
     private String title;
     private String type; // 別途ENUMにするべき
     
-    @OneToMany(mappedBy = "bookEntity")
+    @OneToMany(mappedBy = "bookEntity", fetch = FetchType.EAGER)
     private List<BookRentalEntity> bookRentalEntityList;
     
     public LocalDate getLatestRentalReturnDate() {
@@ -114,5 +114,12 @@ public class BookEntity {
                 ", type='" + type + '\'' +
                 ", bookRentalEntityLatest=" + getLatestRentalEntityOptional().map(BookRentalEntity::toString).orElse("") +
                 '}';
+    }
+    
+    public boolean isEqualsContents(BookEntity e) {
+        if (e == null) {
+            return false;
+        }
+        return this.getTitle().equals(e.getTitle()) && this.getType().equals(e.getType());
     }
 }
