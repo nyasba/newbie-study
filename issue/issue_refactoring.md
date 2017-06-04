@@ -1,6 +1,144 @@
 # リファクタリングを行う
 
-## 課題1 早期リターン
+## 課題1 マジックナンバーの削除
+
+マジックナンバーとは、
+
+> 何らかの識別子もしくは定数として用いられる、プログラムのソースコード中に書かれた具体的な数値である。
+そのプログラムを書いた時点では製作者は数値の意図を把握しているが、
+他のプログラマーまたは製作者本人がマジックナンバーの意図を忘れたときに閲覧すると
+「この数字の意味はわからないが、とにかくプログラムは正しく動く。まるで魔法の数字だ」
+という皮肉を含む。
+
+### サンプル
+```com.newbie.testsample.domain.BookEntityjava
+    public int canRental(LocalDate today, LocalDate returnDate) {
+        if (this.type.equals("技術本") && !this.isFutureAndInRange(today, returnDate, 14L)) {
+            return 1;
+        }
+        if (!this.type.equals("技術本") && !this.isFutureAndInRange(today, returnDate, 7L)) {
+            return 2;
+        }
+        return 0;
+    }
+```
+
+このサンプルでは0ならレンタル可能という例になっているが、
+ソースを解析しないと0の意味が分からなくなっている
+
+### テクニック
+
+本来のマジックナンバーでは、
+1:あり、0:なしのような数値に意味を与えたときにプログラム上では1や0で扱うのではなく、
+YES,NOのような定数を使って意味が明確にわかるようにするためのものである。
+
+```private static final String RESULT = "1"; ```のように単なる定数でも問題ないが、
+ENUMを活用すると下記のように整理できる
+
+```com.newbie.testsample.domain.BookEntity.java
+    public BookRentalCheckStatus canRental(LocalDate today, LocalDate returnDate) {
+        if (this.type.equals("技術本") && !this.isFutureAndInRange(today, returnDate, 14L)) {
+            return BookRentalCheckStatus.OUT_OF_RANGE_TECH;
+        }
+        if (!this.type.equals("技術本") && !this.isFutureAndInRange(today, returnDate, 7L)) {
+            return BookRentalCheckStatus.OUT_OF_RANGE_OTHERS;
+        }
+        return BookRentalCheckStatus.OK;
+    }
+```
+
+```com.newbie.testsample.domain.BookRentalCheckStatus.java
+public enum BookRentalCheckStatus {
+    OK(""),
+    OUT_OF_RANGE_TECH("返却予定日を2週間以内にしてください"),
+    OUT_OF_RANGE_OTHERS("返却予定日を1週間以内にしてください");
+    
+    private String message;
+    
+    BookRentalCheckStatus(String message) {
+        this.message = message;
+    }
+    
+    public boolean isError() {
+        return this != OK;
+    }
+    
+    public String getMessage() {
+        return message;
+    }
+}
+```
+
+既にコードはリファクタリング後となっているため、実践する内容はないので、
+この課題は理解するだけ。申し訳ない。
+
+
+## 課題2 メソッドの抽出
+
+「重複を避けること(Don't repeat yourself)」というDRY原則はプログラミングにおいて非常に重要な概念である。
+
+同じ処理を複数個所書いていればメソッドの抽出により、共通化することを検討する。
+ただし、同じ処理だからといってその前提や背景などが違えば共通化しないほうがよいこともある。
+重要なのは抽出したメソッドに名前を正しく付けられるかである。
+
+
+### サンプル
+
+```com.newbie.testsample.domain.BookEntity.java
+    public BookRentalCheckStatus canRental(LocalDate today, LocalDate returnDate) {
+        if (this.type.equals("技術本")) {
+            LocalDate rentalLimitDate = today.plusDays(14L);
+            if ((returnDate.isEqual(today) || returnDate.isAfter(today))
+                    && (returnDate.isEqual(rentalLimitDate) || returnDate.isBefore(rentalLimitDate))){
+                return BookRentalCheckStatus.OUT_OF_RANGE_TECH;
+            }
+            else {
+                return BookRentalCheckStatus.OK;
+            }
+        }
+        else {
+            LocalDate rentalLimitDate = today.plusDays(7L);
+            if ((returnDate.isEqual(today) || returnDate.isAfter(today))
+                    && (returnDate.isEqual(rentalLimitDate) || returnDate.isBefore(rentalLimitDate))){
+                return BookRentalCheckStatus.OUT_OF_RANGE_OTHERS;
+            }
+            else {
+                return BookRentalCheckStatus.OK;
+            }
+        }
+    }
+ ```
+
+### テクニック
+日付の判定部分をメソッド抽出した例
+
+```com.newbie.testsample.domain.BookEntity.java
+    public BookRentalCheckStatus canRental(LocalDate today, LocalDate returnDate) {
+        if (this.type.equals("技術本") && !this.isFutureAndInRange(today, returnDate, 14L)) {
+            return BookRentalCheckStatus.OUT_OF_RANGE_TECH;
+        }
+        if (!this.type.equals("技術本") && !this.isFutureAndInRange(today, returnDate, 7L)) {
+            return BookRentalCheckStatus.OUT_OF_RANGE_OTHERS;
+        }
+        return BookRentalCheckStatus.OK;
+    }
+    
+    private boolean isFutureAndInRange(LocalDate today, LocalDate returnDate, long rentalDays) {
+        LocalDate rentalLimitDate = today.plusDays(rentalDays);
+        return (returnDate.isEqual(today) || returnDate.isAfter(today))
+                && (returnDate.isEqual(rentalLimitDate) || returnDate.isBefore(rentalLimitDate));
+    }
+```
+
+### 実践
+
+このコードをリファクタリングしてみてください。
+ユニットテストの課題の中で本メソッドに対するテストコードを作成しているはずなので、
+リファクタリング前後にテストコードが全て通るようになっているかは最低限意識してください。
+
+
+
+## 課題3 早期リターン
 
 ### サンプル
 

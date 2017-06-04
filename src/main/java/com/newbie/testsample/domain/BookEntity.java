@@ -40,19 +40,23 @@ public class BookEntity {
     }
     
     public BookRentalCheckStatus canRental(LocalDate today, LocalDate returnDate) {
-        if (this.type.equals("技術本") && !this.isFutureAndInRange(today, returnDate, 14L)) {
-            return BookRentalCheckStatus.OUT_OF_RANGE_TECH;
+        if (this.type.equals("技術本")) {
+            LocalDate rentalLimitDate = today.plusDays(14L);
+            if ((returnDate.isEqual(today) || returnDate.isAfter(today))
+                    && (returnDate.isEqual(rentalLimitDate) || returnDate.isBefore(rentalLimitDate))) {
+                return BookRentalCheckStatus.OK;
+            } else {
+                return BookRentalCheckStatus.OUT_OF_RANGE_TECH;
+            }
+        } else {
+            LocalDate rentalLimitDate = today.plusDays(7L);
+            if ((returnDate.isEqual(today) || returnDate.isAfter(today))
+                    && (returnDate.isEqual(rentalLimitDate) || returnDate.isBefore(rentalLimitDate))) {
+                return BookRentalCheckStatus.OK;
+            } else {
+                return BookRentalCheckStatus.OUT_OF_RANGE_OTHERS;
+            }
         }
-        if (!this.type.equals("技術本") && !this.isFutureAndInRange(today, returnDate, 7L)) {
-            return BookRentalCheckStatus.OUT_OF_RANGE_OTHERS;
-        }
-        return BookRentalCheckStatus.OK;
-    }
-    
-    private boolean isFutureAndInRange(LocalDate today, LocalDate returnDate, long rentalDays) {
-        LocalDate rentalLimitDate = today.plusDays(rentalDays);
-        return (returnDate.isEqual(today) || returnDate.isAfter(today))
-                && (returnDate.isEqual(rentalLimitDate) || returnDate.isBefore(rentalLimitDate));
     }
     
     public BookRentalEntity createRental(LocalDate today, LocalDate returnDate) {
