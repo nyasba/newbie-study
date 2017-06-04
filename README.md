@@ -1,4 +1,4 @@
-# newbie-study  [![CircleCI](https://circleci.com/gh/nyasba/newbie-study/tree/master.svg?style=svg)](https://circleci.com/gh/nyasba/newbie-study/tree/master)
+# newbie-study  [![CircleCI](https://circleci.com/gh/nyasba/newbie-study/tree/master.svg?style=shield)](https://circleci.com/gh/nyasba/newbie-study/tree/master)
 新卒研修用の教材を考えてみる
 
 ### 事前準備
