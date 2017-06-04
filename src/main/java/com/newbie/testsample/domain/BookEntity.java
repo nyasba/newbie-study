@@ -51,7 +51,7 @@ public class BookEntity {
         } else {
             LocalDate rentalLimitDate = today.plusDays(7L);
             if ((returnDate.isEqual(today) || returnDate.isAfter(today))
-                    && (returnDate.isEqual(rentalLimitDate) || returnDate.isBefore(rentalLimitDate))) {
+                    && (returnDate.isBefore(rentalLimitDate))) {
                 return BookRentalCheckStatus.OK;
             } else {
                 return BookRentalCheckStatus.OUT_OF_RANGE_OTHERS;
