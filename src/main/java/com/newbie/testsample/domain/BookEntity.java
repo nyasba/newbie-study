@@ -43,7 +43,7 @@ public class BookEntity {
         if (this.type.equals("技術本") && !this.isFutureAndInRange(today, returnDate, 14L)) {
             return BookRentalCheckStatus.OUT_OF_RANGE_TECH;
         }
-        if (!this.type.equals("技術本") && !this.isFutureAndInRange(today, returnDate, 7)) {
+        if (!this.type.equals("技術本") && !this.isFutureAndInRange(today, returnDate, 7L)) {
             return BookRentalCheckStatus.OUT_OF_RANGE_OTHERS;
         }
         return BookRentalCheckStatus.OK;
