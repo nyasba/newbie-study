@@ -1,12 +1,13 @@
 package com.newbie.testsample.web;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
 import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 
 public class BookForm {
     
-    @NotEmpty(message = "タイトルを入力してください")
+    @NotBlank(message = "タイトルを入力してください")
     private String title;
     
     @NotEmpty(message = "分類を入力してください")
