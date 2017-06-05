@@ -3,14 +3,13 @@
 ## 課題1 DBに接続する
 
 特に設定を変えていなければ、データベースのファイルは以下に存在する
+<Project Root>は各自の環境に置き換えて考えること。
+
 ```
 <Project Root>/testdb.mv.db
 ```
 
-H2のサイトからzipをダウンロード  
-http://www.h2database.com/html/main.html
-
-「bin\h2.bat」を実行し、JDBCのURLを以下のように設定して接続する
+Webアプリを立ち上げた状態で、ブラウザ上から[http://localhost:8080/h2-console](http://localhost:8080/h2-console)を開き、接続先を以下のパスにして接続する
 
 ```
 jdbc:h2:file:<Project Root>\testdb
@@ -50,7 +49,7 @@ where br.returned_date is null
 
 ## 課題5 それぞれの本がレンタルされた回数を取得する
 
-これも課題4同様に結合したあとにgroup by で集計する  
+これも課題4同様に結合したあとにgroup by で集計する
 
 ```
 select title, count(*) from (
