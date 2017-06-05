@@ -30,7 +30,7 @@ src/main/java/com.newbie.testsample.TestsampleApplication
 
 ### ブラウザで確認する
 
-蔵書管理システムという表示が確認できれば成功
+本の管理システムという表示が確認できれば成功
 [http://localhost:8080/books](http://localhost:8080/books)
 
 ## 課題2 アプリケーションの操作
