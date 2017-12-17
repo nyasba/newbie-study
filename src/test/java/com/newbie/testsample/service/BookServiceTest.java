@@ -44,7 +44,7 @@ public class BookServiceTest {
         
         // 本の検索
         List<BookEntity> actual = bookService.getAll();
-        assertThat(actual.size(), is(1));
+        assertThat(actual.size(), is(0)); //テストを落とす
         assertTrue(actual.get(0).isEqualsContents(expected));
         
     }
